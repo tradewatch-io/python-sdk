@@ -22,7 +22,7 @@ Follow the [Getting started](https://tradewatch.io/docs/platform/getting-started
 
 ## 📝 Requirements
 
-Python 3.7+
+Python 3.8+
 
 ## 🔨 Installation & usage
 
