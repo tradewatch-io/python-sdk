@@ -29,7 +29,9 @@ class CryptoExchangeItem(BaseModel):
     id: StrictStr = Field(description="Exchange identifier")
     name: StrictStr = Field(description="Exchange name")
     year_established: StrictInt = Field(description="Exchange established year")
-    __properties: ClassVar[List[str]] = ["id", "name", "year_established"]
+    country: StrictStr = Field(description="Exchange country")
+    website: StrictStr = Field(description="Exchange website URL")
+    __properties: ClassVar[List[str]] = ["id", "name", "year_established", "country", "website"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -84,7 +86,9 @@ class CryptoExchangeItem(BaseModel):
         _obj = cls.model_validate({
             "id": obj.get("id"),
             "name": obj.get("name"),
-            "year_established": obj.get("year_established")
+            "year_established": obj.get("year_established"),
+            "country": obj.get("country"),
+            "website": obj.get("website")
         })
         return _obj
 
