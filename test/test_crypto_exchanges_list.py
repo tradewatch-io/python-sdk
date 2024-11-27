@@ -39,7 +39,9 @@ class TestCryptoExchangesList(unittest.TestCase):
                     tradewatch.models.crypto_exchange_item.CryptoExchangeItem(
                         id = '', 
                         name = '', 
-                        year_established = 56, )
+                        year_established = 56, 
+                        country = '', 
+                        website = '', )
                     ]
             )
         else:
@@ -48,7 +50,9 @@ class TestCryptoExchangesList(unittest.TestCase):
                     tradewatch.models.crypto_exchange_item.CryptoExchangeItem(
                         id = '', 
                         name = '', 
-                        year_established = 56, )
+                        year_established = 56, 
+                        country = '', 
+                        website = '', )
                     ],
         )
         """

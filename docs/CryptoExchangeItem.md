@@ -9,6 +9,8 @@ Name | Type | Description | Notes
 **id** | **str** | Exchange identifier | 
 **name** | **str** | Exchange name | 
 **year_established** | **int** | Exchange established year | 
+**country** | **str** | Exchange country | 
+**website** | **str** | Exchange website URL | 
 
 ## Example
 

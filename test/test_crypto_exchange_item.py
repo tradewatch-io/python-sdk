@@ -37,13 +37,17 @@ class TestCryptoExchangeItem(unittest.TestCase):
             return CryptoExchangeItem(
                 id = '',
                 name = '',
-                year_established = 56
+                year_established = 56,
+                country = '',
+                website = ''
             )
         else:
             return CryptoExchangeItem(
                 id = '',
                 name = '',
                 year_established = 56,
+                country = '',
+                website = '',
         )
         """
 

@@ -5,7 +5,7 @@ All URIs are relative to *https://api.tradewatch.io*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**convert**](CryptoApi.md#convert) | **GET** /crypto/convert/{from}/{to} | Conversion
-[**crypto_get_exchanges**](CryptoApi.md#crypto_get_exchanges) | **GET** /crypto/exchanges | Available Exchanges
+[**getExchanges**](CryptoApi.md#getExchanges) | **GET** /crypto/exchanges | Available Exchanges
 [**getQuote**](CryptoApi.md#getQuote) | **GET** /crypto/symbols/{symbol} | Last Quote
 [**getSymbols**](CryptoApi.md#getSymbols) | **GET** /crypto/symbols | Available Symbols
 
@@ -99,8 +99,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **crypto_get_exchanges**
-> CryptoExchangesList crypto_get_exchanges()
+# **getExchanges**
+> CryptoExchangesList getExchanges()
 
 Available Exchanges
 
@@ -147,11 +147,11 @@ with tradewatch.ApiClient(configuration) as api_client:
 
     try:
         # Available Exchanges
-        api_response = api_instance.crypto_get_exchanges()
-        print("The response of CryptoApi->crypto_get_exchanges:\n")
+        api_response = api_instance.getExchanges()
+        print("The response of CryptoApi->getExchanges:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling CryptoApi->crypto_get_exchanges: %s\n" % e)
+        print("Exception when calling CryptoApi->getExchanges: %s\n" % e)
 ```
 
 

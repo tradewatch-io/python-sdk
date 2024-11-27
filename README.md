@@ -120,7 +120,7 @@ Class | Method | HTTP request | Description
 *CommoditiesApi* | [**getSymbols**](docs/CommoditiesApi.md#getsymbols) | **GET** /commodities/symbols | Available Symbols
 *CommoditiesApi* | [**getTypes**](docs/CommoditiesApi.md#gettypes) | **GET** /commodities/types | Available Types
 *CryptoApi* | [**convert**](docs/CryptoApi.md#convert) | **GET** /crypto/convert/{from}/{to} | Conversion
-*CryptoApi* | [**crypto_get_exchanges**](docs/CryptoApi.md#crypto_get_exchanges) | **GET** /crypto/exchanges | Available Exchanges
+*CryptoApi* | [**getExchanges**](docs/CryptoApi.md#getexchanges) | **GET** /crypto/exchanges | Available Exchanges
 *CryptoApi* | [**getQuote**](docs/CryptoApi.md#getquote) | **GET** /crypto/symbols/{symbol} | Last Quote
 *CryptoApi* | [**getSymbols**](docs/CryptoApi.md#getsymbols) | **GET** /crypto/symbols | Available Symbols
 *CurrenciesApi* | [**convert**](docs/CurrenciesApi.md#convert) | **GET** /currencies/convert/{from}/{to} | Conversion
