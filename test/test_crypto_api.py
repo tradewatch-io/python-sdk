@@ -33,6 +33,13 @@ class TestCryptoApi(unittest.TestCase):
         """
         pass
 
+    def test_crypto_get_exchanges(self) -> None:
+        """Test case for crypto_get_exchanges
+
+        Available Exchanges
+        """
+        pass
+
     def test_getQuote(self) -> None:
         """Test case for getQuote
 

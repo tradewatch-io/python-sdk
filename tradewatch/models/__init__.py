@@ -28,6 +28,8 @@ from tradewatch.models.country import Country
 from tradewatch.models.country_obj import CountryObj
 from tradewatch.models.crypto_conversion import CryptoConversion
 from tradewatch.models.crypto_conversion_query import CryptoConversionQuery
+from tradewatch.models.crypto_exchange_item import CryptoExchangeItem
+from tradewatch.models.crypto_exchanges_list import CryptoExchangesList
 from tradewatch.models.cursor_page_t_customized_symbols_out_full import CursorPageTCustomizedSymbolsOutFull
 from tradewatch.models.error_details import ErrorDetails
 from tradewatch.models.error_response_body import ErrorResponseBody
