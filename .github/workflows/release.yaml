@@ -1,0 +1,107 @@
+name: Release SDK
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      publish_on_demand:
+        description: Force PyPI publish on manual run
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
+
+jobs:
+  release-please:
+    if: ${{ github.ref_name == 'main' }}
+    runs-on: [self-hosted, linux, x64]
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - name: Run release-please
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          release-type: python
+
+  publish-pypi:
+    if: ${{ github.ref_name == 'main' && (needs.release-please.outputs.release_created == 'true' || (github.event_name == 'workflow_dispatch' && github.event.inputs.publish_on_demand == 'true')) }}
+    needs: release-please
+    runs-on: [self-hosted, linux, x64]
+    environment: pypi
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: repo
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Resolve release version
+        id: resolve_version
+        run: |
+          if [ "${{ needs.release-please.outputs.release_created }}" = "true" ] && [ -n "${{ needs.release-please.outputs.tag_name }}" ]; then
+            VERSION="${{ needs.release-please.outputs.tag_name }}"
+          elif [ -f repo/.release-please-manifest.json ]; then
+            VERSION="$(python -c 'import json; print(json.load(open("repo/.release-please-manifest.json", encoding="utf-8"))["."])')"
+          elif git -C repo tag --list | grep -q .; then
+            VERSION="$(git -C repo describe --tags --abbrev=0)"
+          else
+            VERSION="$(python -c 'import pathlib,re; c=pathlib.Path("repo/pyproject.toml").read_text(encoding="utf-8"); m=re.search(r"^version\\s*=\\s*\"([^\"]+)\"\\s*$", c, re.MULTILINE); print(m.group(1) if m else "0.0.0")')"
+          fi
+          VERSION="${VERSION#v}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Apply version to pyproject.toml
+        env:
+          SDK_VERSION: ${{ steps.resolve_version.outputs.version }}
+        run: |
+          python - <<'PY'
+          import os
+          import pathlib
+          import re
+
+          version = os.environ["SDK_VERSION"]
+          pyproject = pathlib.Path("repo/pyproject.toml")
+          content = pyproject.read_text(encoding="utf-8")
+          updated, count = re.subn(
+              r'^version\s*=\s*".*"$',
+              f'version = "{version}"',
+              content,
+              count=1,
+              flags=re.MULTILINE,
+          )
+          if count != 1:
+              raise SystemExit("Could not update version in pyproject.toml")
+          pyproject.write_text(updated, encoding="utf-8")
+          PY
+
+      - name: Build distribution
+        run: |
+          python -P -m pip install --upgrade build
+          tmpdir="$(mktemp -d)"
+          mkdir -p "$tmpdir/src"
+          cp -R repo/. "$tmpdir/src/"
+          cd /tmp
+          python -P -m build "$tmpdir/src" --outdir "$GITHUB_WORKSPACE/repo/dist"
+
+      - name: Remove stdlib-shadowing module paths
+        run: |
+          rm -rf "$GITHUB_WORKSPACE/types" "$GITHUB_WORKSPACE/repo/types"
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: repo/dist
